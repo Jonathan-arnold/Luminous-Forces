@@ -1,12 +1,13 @@
 # Import the necessary libraries and modules
-from main_app_class import MainAppClass
+from App import App
+import pygame
+
 
 def main():
     # Create an instance of the MainAppClass
-    app = MainAppClass()
-
-    # Run the application
+    app = App(1920, 1080, "Luminous Forces v0.1")
     app.run()
+
 
 # Check if the script is being executed directly, and if so, call the main function
 if __name__ == "__main__":

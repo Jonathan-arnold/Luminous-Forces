@@ -48,9 +48,9 @@ Luminous Forces strives to combine the beauty of the visual arts with the accura
 
 ### v0.1 Goal
 
-#### Natural Language Explanation
+Create a basic 3D environment with a simple camera system, window management, and user input handling. This version should set up the foundation for future development, including rendering particles and simulating their interactions.
 
-Create a basic 3D environment with a simple camera system, window management, and user input handling. This version should set up the foundation for future development, including rendering particles and simulating their interactions. The main tasks for v0.1 include:
+#### Natural Language Explanation
 
 1. Implement window management using Pygame.
 2. Set up a basic rendering pipeline using ModernGL.
@@ -70,6 +70,7 @@ Create a basic 3D environment with a simple camera system, window management, an
     1.4. Create a window using pygame.display.set_mode().
 
 2. Set up a basic rendering pipeline using ModernGL.
+
     2.1. Import ModernGL library.
     
         ModernGL is a Python wrapper for OpenGL that simplifies shader and buffer management. Importing the library allows us to access its functionality.
@@ -94,17 +95,25 @@ Create a basic 3D environment with a simple camera system, window management, an
 
         A projection matrix defines how 3D coordinates are transformed into 2D screen coordinates. Passing this matrix to the shaders allows the rendered scene to be displayed correctly on the screen.
 
-Develop a simple camera system that allows for rotation and zoom based on user input.
-3.1. Create a Camera class with position, rotation, and zoom attributes.
-3.2. Implement methods to update the camera's position, rotation, and zoom based on user input.
-3.3. Create a view matrix that represents the camera's transformation.
-3.4. Pass the view matrix to the shaders for rendering the scene from the camera's perspective.
+3. Develop a simple camera system that allows for rotation and zoom based on user input.
 
-Implement user input handling for controlling the camera and basic application functions.
-4.1. Define key bindings for camera control and other application functions.
-4.2. In the main loop, use pygame.event.get() to retrieve user events.
-4.3. Process keyboard and mouse input to control the camera's rotation and zoom.
-4.4. Handle the window close event to properly terminate the application.
+   3.1. Create a Camera class with position, rotation, and zoom attributes.
+   
+   3.2. Implement methods to update the camera's position, rotation, and zoom based on user input.
+   
+   3.3. Create a view matrix that represents the camera's transformation.
+   
+   3.4. Pass the view matrix to the shaders for rendering the scene from the camera's perspective.
+
+4. Implement user input handling for controlling the camera and basic application functions.
+
+   4.1. Define key bindings for camera control and other application functions.
+   
+   4.2. In the main loop, use pygame.event.get() to retrieve user events.
+   
+   4.3. Process keyboard and mouse input to control the camera's rotation and zoom.
+   
+   4.4. Handle the window close event to properly terminate the application.
 
 #### References to the functions or classes that implement this goal
 
