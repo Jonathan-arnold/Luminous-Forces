@@ -10,9 +10,9 @@ def load_shader(shader_file):
 
 def triangle():
     vertices = np.array([
-        -0.5, -0.5, -5.0,  # Bottom-left vertex
-        0.5, -0.5, -5.0,  # Bottom-right vertex
-        0.0, 0.5, -5.0,  # Top vertex
+        -0.5, -0.5, 0.0,  # Bottom-left vertex
+        0.5, -0.5, 0.0,  # Bottom-right vertex
+        0.0, 0.5, 0.0,  # Top vertex
     ], dtype='f4')
 
     return vertices

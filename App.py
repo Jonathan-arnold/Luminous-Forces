@@ -4,6 +4,7 @@ import numpy as np
 import pyrr
 from pygame.locals import GL_CONTEXT_PROFILE_CORE, GL_CONTEXT_MAJOR_VERSION, GL_CONTEXT_MINOR_VERSION
 from helper_functions import *
+from Camera import *
 
 
 class App:
@@ -19,6 +20,10 @@ class App:
 
         # Set up the moderngl rendering pipeline. See internal comments.
         self.setup_program()
+
+        # Create a camera. This allows us to change the position and
+        # orientation of the user's perspective.
+        self.camera = Camera()
 
         # Initialize the pygame clock
         self.clock = pygame.time.Clock()
@@ -60,7 +65,6 @@ class App:
         # position, the next three are color, then that repeats.
         self.setup_vertex_array()
 
-
         projection_matrix = create_perspective_projection_matrix(60, self.width / self.height, 0.1, 100)
         self.shader_program['projection_matrix'].write(projection_matrix.astype('float32').tobytes())
 
@@ -93,10 +97,20 @@ class App:
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         running = False
+                elif event.type == pygame.MOUSEMOTION:
+                    self.camera.orbit_control(event)
+
 
             self.ctx.clear(color=(0.3, 0.5, 0.7))
             self.vertex_array.render(mgl.TRIANGLES)
+
             pygame.display.flip()
+
+            view_matrix = self.camera.create_view_matrix()
+            self.shader_program['view_matrix'].write(view_matrix.astype('float32').tobytes())
+
+            self.camera.camera_control()
+
             self.clock.tick(60)
 
         # terminate the app
