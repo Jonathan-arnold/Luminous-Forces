@@ -117,6 +117,8 @@ Create a basic 3D environment with a simple camera system, window management, an
 
 #### References to the functions or classes that implement this goal
 
+1. app.setup_window(self, width, height, title)
+2. app.setup_program()
 
 
 ## Function and Class Descriptions
@@ -132,12 +134,34 @@ will be a subsection that includes the following:
     help implement the function or class
 
 
-### Function/Class 1
+### app.setup_program
 
 - Goal
+
+   The setup_program function initializes the OpenGL context, compiles and links the vertex and fragment shaders, and sets up the vertex buffer, index buffer, and vertex array for rendering a triangle.
+
 - Natural language explanation
+
+   The function reads the contents of the vertex and fragment shader files, creates an OpenGL context, compiles and links the shaders into a shader program, sets up the vertex buffer with the vertex data, sets up the index buffer with the index data, and creates a vertex array object that associates the vertex buffer data with the shader attributes.
+
 - Pseudocode
+
+  - Read the contents of the vertex and fragment shader files.
+  - Create an OpenGL context using ModernGL.
+  - Compile and link the vertex and fragment shaders into a shader program.
+  - Set up the vertex buffer with the vertex data.
+  - Set up the index buffer with the index data.
+  - Create a vertex array object associating the vertex buffer data with the shader attributes.
+
 - Reference to the actual code
+
+   - load_shader(): Reads the contents of a shader file and returns the shader source as a string.
+   - mgl.create_context(): Initializes an OpenGL context.
+   - self.ctx.program(): Compiles and links the shaders into a shader program.
+   - triangle(): Returns the vertex data for a simple triangle.
+   - setup_vertex_buffer(): Creates a vertex buffer and uploads the vertex data to the GPU.
+   - setup_index_buffer(): Creates an index buffer and uploads the index data to the GPU.
+   - setup_vertex_array(): Creates a vertex array object that associates the vertex buffer data with the shader attributes.
 
 
 ### Function/Class 2
