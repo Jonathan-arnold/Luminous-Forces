@@ -13,6 +13,9 @@ def triangle():
         -0.5, -0.5, 0.0,  # Bottom-left vertex
         0.5, -0.5, 0.0,  # Bottom-right vertex
         0.0, 0.5, 0.0,  # Top vertex
+        0, -0.5, -0.5,  # Bottom-left vertex
+        0, -0.5, 0.5,  # Bottom-right vertex
+        0.0, 0.5, 0.0  # Top vertex
     ], dtype='f4')
 
     return vertices

@@ -1,0 +1,28 @@
+    def rotate(self, xrel, yrel):
+        # orbit the camera's position around the fulcrum
+        adj_pos = self.position - self.orbit_fulcrum
+        mag = np.linalg.norm(adj_pos)
+        sign = adj_pos[2]/abs(adj_pos[2])
+        theta = math.acos(adj_pos[0]/mag) * sign
+        phi = math.asin(adj_pos[1]/mag)
+        new_x = math.cos(theta + xrel/180) * math.cos(phi + yrel/180)
+        new_y = math.sin(phi + yrel/180)
+        new_z = math.sin(theta + xrel/180) * math.cos(phi + yrel/180)
+        new_adj_pos = np.array([new_x, 0, new_z]) * mag
+        new_pos = new_adj_pos + self.orbit_fulcrum
+        self.position = new_pos
+
+        # update rotation
+        facing = self.orbit_fulcrum - new_pos
+        facing = facing/np.linalg.norm(facing)
+        self.facing = facing
+        right = np.cross(facing, np.array([0, 1, 0]))
+        up = np.cross(right, facing)
+        self.up = up / np.linalg.norm(up)
+        # pitch y and z
+        # roll y and x
+        yaw = math.asin(-facing[0]) + math.pi
+        pitch = math.atan2(facing[1], facing[2])
+        roll = math.atan2(facing[1], facing[0]) + math.pi/2
+        self.rotation = [0, 0, yaw]
+        print(self.rotation)

@@ -57,7 +57,7 @@ class App:
 
         # Create an index buffer - this will tell the gpu how to assemble triangles
         # from the vertices
-        self.setup_index_buffer([0, 1, 2])
+        self.setup_index_buffer([[0, 1, 2], [3, 4, 5]])
 
         # Create a vertex array - this will create a relationship between the data
         # in the vertex buffer and the vertex attributes, which tell the gpu how to
