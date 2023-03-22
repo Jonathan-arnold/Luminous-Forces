@@ -5,7 +5,7 @@ import math
 
 
 class Camera:
-    def __init__(self, position=[0, 0, -3], rotation=[0, 0, math.pi], zoom=1):
+    def __init__(self, position=[0, 0, -5], rotation=[0, 0, math.pi], zoom=1):
         self.position = np.array(position)
         self.rotation = np.array(rotation)
         self.rotation_speed = 1/180
@@ -32,18 +32,20 @@ class Camera:
 
     def orbit_control(self, event):
         # Process mouse motion events for rotation
-        if event.type == pygame.MOUSEMOTION:
-            x_rel, y_rel = event.rel
-            if pygame.mouse.get_pressed()[0]:  # Left mouse button is pressed
-                if self.pressed:
-                    self.orbit_around_fulcrum(x_rel, y_rel)
-                self.pressed = True
-            else:
-                self.pressed = False
+        x_rel, y_rel = event.rel
+        if pygame.mouse.get_pressed()[0]:  # Left mouse button is pressed
+            if self.pressed:
+                self.orbit_around_fulcrum(x_rel, y_rel)
+            self.pressed = True
+        else:
+            self.pressed = False
 
     def zoom_control(self, event):
-        if event.type == pygame.MOUSEWHEEL:
-            self.zoom = self.zoom * (1 - event.y / 20)
+        self.zoom = self.zoom * (1 - event.y / 20)
+        adj_pos = self.position - self.orbit_fulcrum
+        adj_pos = pyrr.vector3.normalize(adj_pos)
+        adj_pos *= self.zoom * 5
+        self.position = adj_pos + self.orbit_fulcrum
 
     def orbit_around_fulcrum(self, delta_x, delta_y, sensitivity=0.005):
         # Calculate the vector from the fulcrum to the camera position
@@ -67,11 +69,9 @@ class Camera:
         self.facing = -pyrr.vector3.normalize(self.orbit_fulcrum - self.position)
         self.right = -pyrr.vector3.normalize(np.cross(self.facing, np.array([0, 1, 0])))
         self.up = -pyrr.vector3.normalize(np.cross(self.right, self.facing))
-        print(f'facing: {self.facing}')
-        print(f'right: {self.right}')
-        print(f'up: {self.up}')
 
     def translate(self, translation_vector):
+        self.orbit_fulcrum = self.orbit_fulcrum + np.array(translation_vector)
         self.position = self.position + np.array(translation_vector)
 
 
@@ -91,7 +91,6 @@ class Camera:
     def create_rotation_matrix(self):
         rotation_matrix = np.column_stack((self.right, self.up, self.facing, [0, 0, 0]))
         rotation_matrix = np.append(rotation_matrix, [[0, 0, 0, 1]], 0)
-        print(rotation_matrix)
 
         # Transpose the matrix to obtain the final rotation matrix
         rotation_matrix = np.transpose(rotation_matrix)

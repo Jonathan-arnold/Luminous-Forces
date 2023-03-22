@@ -99,6 +99,8 @@ class App:
                         running = False
                 elif event.type == pygame.MOUSEMOTION:
                     self.camera.orbit_control(event)
+                elif event.type == pygame.MOUSEWHEEL:
+                    self.camera.zoom_control(event)
 
 
             self.ctx.clear(color=(0.3, 0.5, 0.7))

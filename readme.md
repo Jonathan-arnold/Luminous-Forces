@@ -23,12 +23,12 @@ be applied to them individually below the high-level concepts in a tree hierarch
    1. [Overall Project Goal](#overall-project-goal)
    2. [v0.1 Goal](#v01-goal)
 2. [Function and Class Descriptions](#function-and-class-descriptions)
-   1. [Function/Class 1](#functionclass-1)
-   2. [Function/Class 2](#functionclass-2)
-   3. [Function/Class N](#functionclass-n)
+   1. [App.setup_program](#appsetupprogram)
+   2. [Camera](#camera)
 3. [Usage Instructions](#usage-instructions)
 4. [Contributing Guidelines](#contributing-guidelines)
 5. [Version History](#version-history)
+   1. [v0.1](#v01---basic-3d-environment-and-camera-system--release-date--2023-03-21-)
 
 
 ## Goals
@@ -45,6 +45,23 @@ The project is designed to offer a balance between real-time simulation and prec
 
 Luminous Forces strives to combine the beauty of the visual arts with the accuracy of scientific simulation, creating an engaging and educational tool for exploring the fascinating world of particle physics.
 
+#### Natural Language Explanation
+
+Luminous Forces will be developed using Python, taking advantage of several libraries and frameworks to create a visually stunning 3D particle simulator that accurately simulates electric forces between charged particles.
+
+1. Pygame will be used to manage the main window, user input, and event handling. This library provides a simple interface to build interactive applications and games, making it an ideal choice for managing the display and user interactions.
+
+2. ModernGL, a Python wrapper for OpenGL, will be employed to handle the 3D rendering pipeline. This library simplifies shader and buffer management, allowing for efficient rendering of the particles, including the smooth, glowing spheres with distinct warm and cool color palettes for protons and electrons.
+
+3. NumPy, a powerful numerical computing library for Python, will be used to perform vector and matrix calculations. This library will assist in the simulation of the particle physics, including the implementation of Coulomb's Law and the interactions between protons, electrons, and neutrons.
+
+4. To create an intuitive camera control system, a custom Camera class will be developed that allows users to navigate the 3D environment, zoom in and out, and rotate around the scene. This will enhance the user experience, providing a more immersive and engaging view of the particle interactions.
+
+5. As the project evolves, a user-friendly GUI will be implemented using a library such as PyQT or tkinter. This will allow users to customize simulation parameters, adjust simulation speeds, and control the number of particles in the scene.
+
+6. Performance optimizations and fine-tuning will be performed to ensure a balance between real-time simulation and precision, providing a smooth and visually appealing experience.
+
+By combining these libraries and techniques, Luminous Forces will achieve its goal of creating an engaging and educational tool that merges the beauty of the visual arts with the accuracy of scientific simulation, enabling users to explore the fascinating world of particle physics.
 
 ### v0.1 Goal
 
@@ -117,8 +134,9 @@ Create a basic 3D environment with a simple camera system, window management, an
 
 #### References to the functions or classes that implement this goal
 
-1. app.setup_window(self, width, height, title)
-2. app.setup_program()
+1. function App.setup_window(self, width, height, title)
+2. function App.setup_program()
+3. class Camera
 
 
 ## Function and Class Descriptions
@@ -136,15 +154,15 @@ will be a subsection that includes the following:
 
 ### app.setup_program
 
-- Goal
+#### Goal
 
    The setup_program function initializes the OpenGL context, compiles and links the vertex and fragment shaders, and sets up the vertex buffer, index buffer, and vertex array for rendering a triangle.
 
-- Natural language explanation
+#### Natural language explanation
 
    The function reads the contents of the vertex and fragment shader files, creates an OpenGL context, compiles and links the shaders into a shader program, sets up the vertex buffer with the vertex data, sets up the index buffer with the index data, and creates a vertex array object that associates the vertex buffer data with the shader attributes.
 
-- Pseudocode
+#### Pseudocode
 
   - Read the contents of the vertex and fragment shader files.
   - Create an OpenGL context using ModernGL.
@@ -153,7 +171,7 @@ will be a subsection that includes the following:
   - Set up the index buffer with the index data.
   - Create a vertex array object associating the vertex buffer data with the shader attributes.
 
-- Reference to the actual code
+#### Reference to the actual code
 
    - load_shader(): Reads the contents of a shader file and returns the shader source as a string.
    - mgl.create_context(): Initializes an OpenGL context.
@@ -164,14 +182,39 @@ will be a subsection that includes the following:
    - setup_vertex_array(): Creates a vertex array object that associates the vertex buffer data with the shader attributes.
 
 
-### Function/Class 2
+### Camera
 
-- Goal
-- Natural language explanation
-- Pseudocode
-- Reference to the actual code
+#### Goal
 
-... (continue with other functions and classes)
+The Camera class provides a 3D camera for a physics simulator, allowing the user to control its position, rotation, and zoom using the keyboard and mouse.
+
+#### Natural language explanation
+
+The Camera class creates a camera object that can be positioned, rotated, and zoomed in a 3D environment. The class provides methods for keyboard and mouse controls, as well as functions to create view and rotation matrices. The camera can translate (move) along its axes, orbit around a specified point (fulcrum), and zoom in or out. It also maintains information about its position, rotation, and orientation (facing, up, and right vectors).
+
+#### Pseudocode
+
+1. Initialize the camera with position, rotation, and zoom values
+2. Define methods for camera control:
+   1. Keyboard controls for translation
+   2. Mouse controls for orbiting around the fulcrum
+   3. Mouse controls for zooming
+3. Define methods for orbiting around the fulcrum and updating the camera's orientation vectors
+4. Define methods for translating the camera
+5. Create view and rotation matrices based on the camera's position and orientation
+
+#### Reference to the actual code
+
+1. Initialization: __init__(self, position=[0, 0, -5], rotation=[0, 0, math.pi], zoom=1)
+2. Camera control methods:
+   1. Keyboard controls: camera_control(self)
+   2. Orbit control (mouse motion): orbit_control(self, event)
+   3. Zoom control (mouse wheel): zoom_control(self, event)
+3. Orbiting and updating orientation vectors: orbit_around_fulcrum(self, delta_x, delta_y, sensitivity=0.005)
+4. Camera translation: translate(self, translation_vector)
+5. Create view and rotation matrices:
+   1. View matrix: create_view_matrix(self)
+   2. Rotation matrix: create_rotation_matrix(self)
 
 
 ## Usage Instructions
@@ -254,3 +297,18 @@ Camera movement not yet implemented.
 
 Entries:
 
+### v0.1 - Basic 3D Environment and Camera System (Release Date: 2023-03-21)
+
+Created a basic 3D environment with window management using Pygame.
+
+- Set up a fundamental rendering pipeline with ModernGL, including vertex and fragment shaders, vertex and index buffers, and a projection matrix.
+
+- Developed a simple camera system that allows for rotation and zoom based on user input, along with methods to update the camera's position, rotation, and zoom.
+
+- Implemented user input handling for camera control and basic application functions, such as closing the window.
+
+Known issues/limitations:
+
+- Limited to rendering a single static object.
+- Advanced camera movement and controls not yet implemented.
+- Particle rendering and simulation features not yet added.
