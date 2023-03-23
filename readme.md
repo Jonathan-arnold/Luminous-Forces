@@ -25,6 +25,7 @@ be applied to them individually below the high-level concepts in a tree hierarch
 2. [Function and Class Descriptions](#function-and-class-descriptions)
    1. [App.setup_program](#appsetupprogram)
    2. [Camera](#camera)
+   3. [User_Inputs](#userinputs)
 3. [Usage Instructions](#usage-instructions)
 4. [Contributing Guidelines](#contributing-guidelines)
 5. [Version History](#version-history)
@@ -152,34 +153,24 @@ will be a subsection that includes the following:
     help implement the function or class
 
 
-### app.setup_program
+### App
 
 #### Goal
 
-   The setup_program function initializes the OpenGL context, compiles and links the vertex and fragment shaders, and sets up the vertex buffer, index buffer, and vertex array for rendering a triangle.
+The App class is responsible for initializing and running the 3D application, setting up the window, OpenGL context, shaders, and camera, as well as managing the main loop for rendering and user input processing.
 
 #### Natural language explanation
 
-   The function reads the contents of the vertex and fragment shader files, creates an OpenGL context, compiles and links the shaders into a shader program, sets up the vertex buffer with the vertex data, sets up the index buffer with the index data, and creates a vertex array object that associates the vertex buffer data with the shader attributes.
-
-#### Pseudocode
-
-  - Read the contents of the vertex and fragment shader files.
-  - Create an OpenGL context using ModernGL.
-  - Compile and link the vertex and fragment shaders into a shader program.
-  - Set up the vertex buffer with the vertex data.
-  - Set up the index buffer with the index data.
-  - Create a vertex array object associating the vertex buffer data with the shader attributes.
+The App class initializes the Pygame library, sets up a window for rendering, creates a ModernGL context, loads and compiles shaders, sets up buffers and vertex arrays, and initializes a Camera object. It then runs the main loop, which includes rendering the scene, handling user inputs, and updating the camera's view matrix.
 
 #### Reference to the actual code
 
-   - load_shader(): Reads the contents of a shader file and returns the shader source as a string.
-   - mgl.create_context(): Initializes an OpenGL context.
-   - self.ctx.program(): Compiles and links the shaders into a shader program.
-   - triangle(): Returns the vertex data for a simple triangle.
-   - setup_vertex_buffer(): Creates a vertex buffer and uploads the vertex data to the GPU.
-   - setup_index_buffer(): Creates an index buffer and uploads the index data to the GPU.
-   - setup_vertex_array(): Creates a vertex array object that associates the vertex buffer data with the shader attributes.
+- __init__ method in the App class
+- setup_window method in the App class
+- setup_program method in the App class
+- run method in the App class
+- destroy method in the App class
+- Camera class
 
 
 ### Camera
@@ -215,6 +206,26 @@ The Camera class creates a camera object that can be positioned, rotated, and zo
 5. Create view and rotation matrices:
    1. View matrix: create_view_matrix(self)
    2. Rotation matrix: create_rotation_matrix(self)
+
+
+### User_Inputs
+
+#### Goal
+
+The User_Inputs class aims to handle user input events, such as keyboard and mouse inputs, to control the camera's position, rotation, and zoom levels in the 3D scene.
+
+#### Natural language explanation
+
+The User_Inputs class receives an instance of the App class as an argument during initialization. It then processes user inputs, such as keyboard keys and mouse movements, to translate, rotate, and zoom the camera in the 3D scene.
+
+#### References to actual code
+
+- event_handling method in the User_Inputs class
+- orbit_control method in the User_Inputs class
+- translate_control method in the User_Inputs class
+- zoom_control method in the Camera class
+- orbit_around_fulcrum method in the Camera class
+- translate method in the Camera class
 
 
 ## Usage Instructions

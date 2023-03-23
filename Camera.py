@@ -16,29 +16,6 @@ class Camera:
         self.zoom = zoom
         self.pressed = False
 
-    def camera_control(self):
-        keys = pygame.key.get_pressed()
-
-        # Translate
-        if keys[pygame.K_w]:
-            self.translate([0, 0, 0.1])
-        if keys[pygame.K_s]:
-            self.translate([0, 0, -0.1])
-        if keys[pygame.K_a]:
-            self.translate([0.1, 0, 0])
-        if keys[pygame.K_d]:
-            self.translate([-0.1, 0, 0])
-
-
-    def orbit_control(self, event):
-        # Process mouse motion events for rotation
-        x_rel, y_rel = event.rel
-        if pygame.mouse.get_pressed()[0]:  # Left mouse button is pressed
-            if self.pressed:
-                self.orbit_around_fulcrum(x_rel, y_rel)
-            self.pressed = True
-        else:
-            self.pressed = False
 
     def zoom_control(self, event):
         self.zoom = self.zoom * (1 - event.y / 20)
@@ -51,11 +28,13 @@ class Camera:
         # Calculate the vector from the fulcrum to the camera position
         vector_to_camera = self.position - self.orbit_fulcrum
 
-        # Rotate around the vertical axis (Y-axis)
+        # Rotate around the vertical axis (Y-axis) by delta_x * sensitivity radian
+        # This rotation is performed using a rotation matrix created from Euler angles
         rotation_y = pyrr.Matrix44.from_eulers((0, 0, delta_x * sensitivity), dtype='float32')
         vector_to_camera = pyrr.matrix44.apply_to_vector(rotation_y, vector_to_camera)
 
-        # Rotate around the horizontal axis (camera's right vector)
+        # Rotate around the horizontal axis (camera's right vector) by delta_x * sensitivity radian
+        # This rotation is performed using a rotation matrix created from an axis-angle representation
         right_vector = np.cross(self.facing, [0, 1, 0])
         right_vector = pyrr.vector3.normalize(right_vector)
         rotation_matrix_right = pyrr.matrix44.create_from_axis_rotation(right_vector, delta_y * sensitivity,
@@ -65,7 +44,7 @@ class Camera:
         # Add the rotated vector to the fulcrum position to get the new camera position
         self.position = self.orbit_fulcrum + vector_to_camera
 
-        # Update the facing vector
+        # Update the facing, right, and up vectors of the camera to maintain correct orientation
         self.facing = -pyrr.vector3.normalize(self.orbit_fulcrum - self.position)
         self.right = -pyrr.vector3.normalize(np.cross(self.facing, np.array([0, 1, 0])))
         self.up = -pyrr.vector3.normalize(np.cross(self.right, self.facing))
@@ -83,6 +62,9 @@ class Camera:
         translation_matrix = pyrr.matrix44.create_from_translation(self.position, dtype='float32')
 
         # Calculate the view matrix (inverse of the camera's model matrix)
+        # The view matrix represents the camera's transformation in the world.
+        # It is the inverse of the camera's model matrix because it transforms
+        # the world coordinates to the camera's local coordinate system.
         view_matrix = pyrr.matrix44.multiply(rotation_matrix, translation_matrix)
         view_matrix = pyrr.matrix44.inverse(view_matrix)
 
