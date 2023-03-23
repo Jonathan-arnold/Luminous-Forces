@@ -274,6 +274,13 @@ and classes as needed.
 ensure the quality and consistency of the code. This will help identify
 potential issues or areas for improvement before moving on to the next
 version.
+   1. Understand the purpose, requirements, and documentation: Familiarize yourself with the goals, requirements, and documentation of the code. This will help you understand the context in which the code was written and its intended functionality.
+
+   2. Review code structure, readability, and maintainability: Examine the overall organization and modularity of the code, checking for readability, meaningful naming conventions, and adherence to best practices. Look for code smells, anti-patterns, and opportunities to improve maintainability.
+
+   3. Test the code and assess performance: Ensure the code is thoroughly tested, both manually and with automated tests. Identify potential performance bottlenecks and opportunities for optimization.
+
+   4. Evaluate extensibility, scalability, and provide feedback: Consider the ease of extending or modifying the code in the future and its ability to scale. Summarize your findings, provide constructive feedback, and discuss alternative approaches or solutions as needed.
 
 Please follow these guidelines when contributing to the project. By
 adhering to these principles, we can work together to develop and
