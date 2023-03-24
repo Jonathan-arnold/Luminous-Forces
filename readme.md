@@ -64,80 +64,62 @@ Luminous Forces will be developed using Python, taking advantage of several libr
 
 By combining these libraries and techniques, Luminous Forces will achieve its goal of creating an engaging and educational tool that merges the beauty of the visual arts with the accuracy of scientific simulation, enabling users to explore the fascinating world of particle physics.
 
-### v0.1 Goal
+### v0.2 Goal
 
-Create a basic 3D environment with a simple camera system, window management, and user input handling. This version should set up the foundation for future development, including rendering particles and simulating their interactions.
+The primary goals of v0.2 are to enhance the visual appearance and realism of the 3D engine. We will add lighting, rendering spheres, rendering multiple objects, coloring objects, introducing the physics engine with initial support for two objects, rendering reflective objects, rendering glowing objects, implementing skyboxes, and adding shadows.
 
 #### Natural Language Explanation
 
-1. Implement window management using Pygame.
-2. Set up a basic rendering pipeline using ModernGL.
-3. Develop a simple camera system that allows for rotation and zoom based on user input.
-4. Add user input handling for camera control and basic application functions, such as closing the window.
+1. Implement a basic lighting system to enhance the appearance of objects in the scene. Introduce different types of light sources (e.g., point lights, directional lights, and spotlights) and basic shading models (e.g., Phong or Lambertian shading).
+2. Add support for rendering spheres as a new primitive shape. Generate sphere geometry and use vertex and index buffers to render the sphere.
+3. Enable rendering of multiple objects in the scene. Maintain a list of objects in the scene and render them in the main loop.
+4. Add support for coloring objects with different materials or textures. Implement materials with properties (diffuse color, specular color, shininess, etc.) and texture mapping.
+5. Integrate a physics engine with initial support for two objects in the scene. Implement basic physics simulations with collision detection, gravity, and object interactions.
+6. Add support for rendering reflective and glowing objects in the scene. Implement environment mapping for reflections and emissive materials for glowing objects.
+7. Implement skyboxes to create an immersive background environment in the scene. Use a cube with a textured interior to create the illusion of a distant environment.
+8. Add realistic shadows to the scene to improve visual depth and realism. Implement shadow mapping techniques such as shadow maps or cascaded shadow maps.
 
 #### Pseudocode
-
-1. Initialize Pygame and create a window.
-
-    1.1. Import Pygame library.
-
-    1.2. Initialize Pygame using pygame.init().
-
-    1.3. Set the window size and title.
-
-    1.4. Create a window using pygame.display.set_mode().
-
-2. Set up a basic rendering pipeline using ModernGL.
-
-    2.1. Import ModernGL library.
-    
-        ModernGL is a Python wrapper for OpenGL that simplifies shader and buffer management. Importing the library allows us to access its functionality.
-    
-    2.2. Create a standalone ModernGL context.
-    
-        A context represents the state of the OpenGL rendering pipeline. Creating a context allows us to configure and use the OpenGL pipeline through ModernGL.
-
-    2.3. Load vertex and fragment shaders from files.
-
-        Shaders are small programs that run on the GPU and determine how the geometry and appearance of 3D objects are rendered. Loading vertex and fragment shaders will allow us to customize the rendering process.
-
-    2.4. Compile shaders and create a shader program.
-
-        Compiling the shaders and creating a shader program link the shaders together, allowing them to work in tandem during the rendering process.
-
-    2.5. Define vertex and index buffers for rendering geometry.
-    
-        Vertex buffers store the position and other attributes of vertices, while index buffers define how the vertices are connected to form triangles. These buffers are used by the GPU to render 3D geometry.
-
-    2.6. Set up a projection matrix and pass it to the shaders.
-
-        A projection matrix defines how 3D coordinates are transformed into 2D screen coordinates. Passing this matrix to the shaders allows the rendered scene to be displayed correctly on the screen.
-
-3. Develop a simple camera system that allows for rotation and zoom based on user input.
-
-   3.1. Create a Camera class with position, rotation, and zoom attributes.
-   
-   3.2. Implement methods to update the camera's position, rotation, and zoom based on user input.
-   
-   3.3. Create a view matrix that represents the camera's transformation.
-   
-   3.4. Pass the view matrix to the shaders for rendering the scene from the camera's perspective.
-
-4. Implement user input handling for controlling the camera and basic application functions.
-
-   4.1. Define key bindings for camera control and other application functions.
-   
-   4.2. In the main loop, use pygame.event.get() to retrieve user events.
-   
-   4.3. Process keyboard and mouse input to control the camera's rotation and zoom.
-   
-   4.4. Handle the window close event to properly terminate the application.
+1. Lighting
+- Define light sources and their properties (position, color, intensity, etc.)
+- Implement shading models (Phong or Lambertian shading)
+- Calculate lighting contributions based on shading models and light sources
+- Apply the lighting contributions to the objects in the scene
+2. Spheres
+- Define a sphere class with properties (radius, position, etc.)
+- Generate sphere geometry (vertices and indices)
+- Create vertex and index buffers for the sphere
+- Render the sphere using the created buffers
+3. Multiple Objects
+- Create a list to store scene objects
+- For each object in the scene, generate geometry and create vertex/index buffers
+- In the main loop, render each object in the scene using its buffers
+4. Material Properties
+- Define a material class with properties (diffuse color, specular color, shininess, etc.)
+- Assign a material to each object in the scene
+- Implement texture mapping to apply images or patterns to object surfaces
+- In the shading process, use the material properties and textures to determine the final object color
+5. Physics Engine
+- Integrate a physics engine (e.g., PyBullet, ODE, or a custom solution)
+- Define rigid bodies for scene objects
+- Set up the physics simulation (gravity, collision shapes, etc.)
+- In the main loop, update the physics simulation and apply the results to the objects
+6. Reflections and Glow
+- Implement environment mapping (e.g., cube mapping) for reflective objects
+- Define emissive materials for glowing objects
+- In the shading process, use environment mapping and emissive materials to determine the final object appearance
+7. Skyboxes
+- Create a cube with inverted normals to act as a skybox
+- Apply a panoramic texture to the inside faces of the cube
+- Render the skybox behind all other objects in the scene
+8. Shadows
+- Choose a shadow mapping technique (e.g., shadow maps, cascaded shadow maps)
+- Render the scene from the light's point of view, storing depth information in a shadow map
+- In the main scene rendering, use the shadow map to determine if a pixel is in shadow
+- Apply shadows to the objects in the scene based on the shadow map data
 
 #### References to the functions or classes that implement this goal
 
-1. function App.setup_window(self, width, height, title)
-2. function App.setup_program()
-3. class Camera
 
 
 ## Function and Class Descriptions
