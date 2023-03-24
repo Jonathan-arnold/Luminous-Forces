@@ -2,20 +2,47 @@ import pygame
 import numpy as np
 import pyrr
 import math
+from EventHandler import EventHandler
 
 
-class Camera:
-    def __init__(self, position=[0, 0, -5], rotation=[0, 0, math.pi], zoom=1):
+class Camera(EventHandler):
+    def __init__(self, app, position=[0, 0, -5], facing=[0, 0, -1], zoom=1):
         self.position = np.array(position)
-        self.rotation = np.array(rotation)
         self.rotation_speed = 1/180
         self.orbit_fulcrum = np.array([0, 0, 0])
-        self.facing = np.array([0, 0, -1])
+        self.facing = np.array(facing)
         self.up = np.array([0, 1, 0])
-        self.right = np.array([1, 0, 0])
+        self.right = np.cross(self.facing, self.up)
         self.zoom = zoom
         self.pressed = False
+        self.active = False
+        self.app = app
 
+        self.app.event_manager.register_listener(pygame.MOUSEMOTION, self)
+        self.app.event_manager.register_listener(pygame.MOUSEWHEEL, self)
+
+    def toggle(self):
+        if self.active:
+            self.active = False
+        else:
+            self.active = True
+
+    def handle_event(self, event):
+        if self.active:
+            if event.type == pygame.MOUSEMOTION:
+                self.orbit_control(event)
+            if event.type == pygame.MOUSEWHEEL:
+                self.zoom_control(event)
+
+    def orbit_control(self, event):
+        # Process mouse motion events for rotation
+        x_rel, y_rel = event.rel
+        if pygame.mouse.get_pressed()[0]:  # Left mouse button is pressed
+            if self.pressed:
+                self.orbit_around_fulcrum(x_rel, y_rel)
+            self.pressed = True
+        else:
+            self.pressed = False
 
     def zoom_control(self, event):
         self.zoom = self.zoom * (1 - event.y / 20)

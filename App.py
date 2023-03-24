@@ -5,10 +5,12 @@ import pyrr
 from pygame.locals import GL_CONTEXT_PROFILE_CORE, GL_CONTEXT_MAJOR_VERSION, GL_CONTEXT_MINOR_VERSION
 from helper_functions import *
 from Camera import *
-from User_Inputs import *
+from UserInputs import *
+from EventManager import *
+from EventHandler import *
 
 
-class App:
+class App(EventHandler):
     def __init__(self, width, height, title):
         # Initialize Pygame
         pygame.init()
@@ -36,15 +38,51 @@ class App:
         # position, the next three are color, then that repeats.
         self.create_vertex_array()
 
-        # Create a camera. This allows us to change the position and
-        # orientation of the user's perspective.
-        self.camera = Camera()
-
         # Create a User_Inputs object to handle inputs from the user
-        self.user_inputs = User_Inputs(self)
+        self.event_manager = EventManager()
+        self.user_inputs = UserInputs(self, self.event_manager)
+        self.event_manager.register_listener(pygame.QUIT, self)
+        self.event_manager.register_listener(pygame.KEYDOWN, self)
+
+        # Create a list of cameras. This allows us to change the position and
+        # orientation of the user's perspective.
+        self.cameras = {
+            'main_camera': Camera(self),
+            'secondary_camera': Camera(self, [-10, 0, 0], [-1, 0, 0], 2)
+        }
+        self.active_camera = 'main_camera'
+        # Activate the main camera
+        self.cameras[self.active_camera].toggle()
 
         # Initialize the pygame clock
         self.clock = pygame.time.Clock()
+
+        # Initialize the running variable
+        self.running = False
+
+    def handle_event(self, event):
+        # Check if the user has quit the app
+        if event.type == pygame.QUIT:
+            self.running = False
+
+        if event.type == pygame.KEYDOWN:
+            # Check if the user has quit the app
+            if event.key == pygame.K_ESCAPE:
+                self.running = False
+
+            # Check if the camera has been changed
+            if event.key == pygame.K_0:
+                self.switch_camera('main_camera')
+            if event.key == pygame.K_1:
+                self.switch_camera('secondary_camera')
+
+    def switch_camera(self, camera_name):
+        # Deactivate the currently active camera and activate the given camera
+        if camera_name in self.cameras:
+            self.cameras[self.active_camera].toggle()
+            self.active_camera = camera_name
+            self.cameras[self.active_camera].toggle()
+
 
     def setup_window(self, width, height, title):
         self.width = width
@@ -92,11 +130,11 @@ class App:
                                                   'in_vert', index_buffer=self.index_buffer)
 
     def run(self):
-        running = True
+        self.running = True
 
-        while running:
+        while self.running:
             # Handle pygame events for quit and camera controls
-            running = self.user_inputs.event_handling()
+            self.user_inputs.event_handling()
 
             # Clear the buffer, render the vertices, and set up the view matrix
             self.render()
@@ -112,28 +150,8 @@ class App:
 
         pygame.display.flip()
 
-        view_matrix = self.camera.create_view_matrix()
+        view_matrix = self.cameras[self.active_camera].create_view_matrix()
         self.shader_program['view_matrix'].write(view_matrix.astype('float32').tobytes())
-
-    def event_handling(self):
-
-        running = True
-        for event in pygame.event.get():
-            # check if the app has been quit
-            if event.type == pygame.QUIT:
-                running = False
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    running = False
-
-            # check if the mouse has moved for orbit control
-            elif event.type == pygame.MOUSEMOTION:
-                self.camera.orbit_control(event)
-
-            # check if the mousewheel has turned for zoom control
-            elif event.type == pygame.MOUSEWHEEL:
-                self.camera.zoom_control(event)
-        return running
 
     def destroy(self):
         # Safely exit the program
